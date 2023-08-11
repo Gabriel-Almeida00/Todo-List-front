@@ -9,17 +9,31 @@
 <body>
     <div class="task-container">
         <h1>Todo List</h1>
-        <input type="text" id="task-name" placeholder="Nome da tarefa">
-        <input type="text" id="task-description" placeholder="Descrição da tarefa">
-        <input type="date" id="task-due-date">
-        <input type="number" id="task-priority" placeholder="Prioridade (1-5)">
-        <input type="text" id="task-category" placeholder="Categoria da tarefa">
-        <select id="task-status">
-            <option value="todo">Todo</option>
-            <option value="doing">Doing</option>
-            <option value="done">Done</option>
-        </select>
-        <button id="add-task-btn">Adicionar Tarefa</button>
+        <form id="task-form">
+            <label for="task-name">Nome da tarefa:</label>
+            <input type="text" id="task-name" name="task-name" required><br>
+            
+            <label for="task-description">Descrição da tarefa:</label>
+            <input type="text" id="task-description" name="task-description" required><br>
+            
+            <label for="task-category">Categoria da tarefa:</label>
+            <input type="text" id="task-category" name="task-category" required><br>
+            
+            <label for="task-due-date">Data de Término:</label>
+            <input type="date" id="task-due-date" name="task-due-date" required><br>
+            
+            <label for="task-priority">Prioridade (1-5):</label>
+            <input type="number" id="task-priority" name="task-priority" min="1" max="5" required><br>
+            
+            <label for="task-status">Status:</label>
+            <select id="task-status" name="task-status">
+                <option value="todo">Todo</option>
+                <option value="doing">Doing</option>
+                <option value="done">Done</option>
+            </select><br>
+            
+            <button type="submit">Salvar Tarefa</button>
+        </form>
         
         <h2>Filtrar por Status:</h2>
         <select id="filter-status">
@@ -32,20 +46,23 @@
         <table id="task-table">
             <thead>
                 <tr>
+                    <th><input type="checkbox" id="select-all-checkbox"></th>
                     <th>Nome</th>
                     <th>Descrição</th>
+                    <th>Categoria</th>
                     <th>Data de Término</th>
                     <th>Prioridade</th>
-                    <th>Categoria</th>
                     <th>Status</th>
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody id="task-list">
-
+               
             </tbody>
         </table>
+        <button id="change-status-selected-btn">Marcar como Concluída</button>
     </div>
+    
     <script src="script.js"></script>
 </body>
 </html>

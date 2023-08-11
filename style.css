@@ -67,7 +67,6 @@ th, td {
     background-color: #c82333;
 }
 
-/* Responsive layout for smaller screens */
 @media (max-width: 600px) {
     .task-container {
         padding: 10px;
