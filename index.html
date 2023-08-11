@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Todo List</title>
+</head>
+<body>
+    <div class="task-container">
+        <h1>Todo List</h1>
+        <input type="text" id="task-name" placeholder="Nome da tarefa">
+        <input type="text" id="task-description" placeholder="Descrição da tarefa">
+        <input type="date" id="task-due-date">
+        <input type="number" id="task-priority" placeholder="Prioridade (1-5)">
+        <input type="text" id="task-category" placeholder="Categoria da tarefa">
+        <select id="task-status">
+            <option value="todo">Todo</option>
+            <option value="doing">Doing</option>
+            <option value="done">Done</option>
+        </select>
+        <button id="add-task-btn">Adicionar Tarefa</button>
+        
+        <h2>Filtrar por Status:</h2>
+        <select id="filter-status">
+            <option value="all">Todos</option>
+            <option value="todo">Todo</option>
+            <option value="doing">Doing</option>
+            <option value="done">Done</option>
+        </select>
+        
+        <table id="task-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Data de Término</th>
+                    <th>Prioridade</th>
+                    <th>Categoria</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="task-list">
+
+            </tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
