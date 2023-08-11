@@ -15,6 +15,17 @@ Este é um simples aplicativo de lista de tarefas desenvolvido usando HTML, CSS 
 - Excluir tarefas
 - Filtrar tarefas por Status
 
+ ###  Marcar como Concluída
+
+- Selecione uma ou várias tarefas usando as caixas de seleção à esquerda de cada tarefa.
+- Clique no botão "Marcar como Concluída".
+- As tarefas selecionadas terão seu status alterado para "Done".
+
+###  Persistência de Dados
+
+- As tarefas adicionadas serão salvas automaticamente no localStorage do navegador.
+- Ao recarregar a página, as tarefas serão carregadas a partir do localStorage.
+
 
 ## Tecnologias Utilizadas
 
