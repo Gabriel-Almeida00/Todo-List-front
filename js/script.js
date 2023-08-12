@@ -1,4 +1,3 @@
-
 const tasks = [];
 document.addEventListener("DOMContentLoaded", function () {
     const taskForm = document.getElementById("task-form");
