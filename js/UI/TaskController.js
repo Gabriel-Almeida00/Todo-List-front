@@ -2,7 +2,6 @@ import TaskManager from "../services/TaskManager";
 
 class TaskController {
   
-
   constructor() {
     this.taskManager = new TaskManager();
     this.taskForm = document.getElementById("task-form");
@@ -38,7 +37,10 @@ class TaskController {
           }
         });
 
-        this.taskManager.updateSelectedTasksStatus(selectedTaskIndexes);
+        selectedTaskIndexes.forEach(index => {
+          this.taskManager.deleteTask(index); // Chamando o método deleteTask do taskManager
+        });
+
         this.renderTaskList();
 
         this.selectAllCheckbox.checked = false;
@@ -52,6 +54,7 @@ class TaskController {
       console.error("One or more elements are missing on the page.");
     }
   }
+
 
   addTask() {
     const taskNameInput = document.getElementById("task-name");
@@ -70,6 +73,16 @@ class TaskController {
       status: taskStatusInput.value
     };
 
+    if (!this.validatePriority(task.priority)) {
+      alert("Nível de prioridade inválido.");
+      return;
+    }
+
+    if (!this.validateDueDate(task.dueDate)) {
+      alert("Data de término inválida ou menor que a data atual.");
+      return;
+    }
+
     if (this.validateTask(task)) {
       this.taskManager.addTask(task);
       this.renderTaskList();
@@ -78,6 +91,60 @@ class TaskController {
       alert("Please fill in all required fields.");
   }
 }
+
+getUpdatedTaskFromForm() {
+  const taskNameInput = document.getElementById("task-name");
+  const taskDescriptionInput = document.getElementById("task-description");
+  const taskDueDateInput = document.getElementById("task-due-date");
+  const taskPriorityInput = document.getElementById("task-priority");
+  const taskCategoryInput = document.getElementById("task-category");
+  const taskStatusInput = document.getElementById("task-status");
+
+  const updatedTask = {
+    name: taskNameInput.value.trim(),
+    description: taskDescriptionInput.value.trim(),
+    dueDate: taskDueDateInput.value,
+    priority: parseInt(taskPriorityInput.value),
+    category: taskCategoryInput.value.trim(),
+    status: taskStatusInput.value
+  };
+
+  if (!this.validatePriority(updatedTask.priority)) {
+    alert("Nível de prioridade inválido.");
+    return ; 
+  }
+
+  if (!this.validateDueDate(updatedTask.dueDate)) {
+    alert("Data de término inválida ou menor que a data atual.");
+    return ; 
+  }
+
+  if (this.validateTask(updatedTask)) {
+    return updatedTask; 
+  } else {
+    alert("Por favor, preencha todos os campos obrigatórios.");
+    return ; 
+  }
+}
+
+validatePriority(priority) {
+  const priorityRegex = /^[1-5]$/;
+  return priorityRegex.test(priority);
+}
+
+validateDueDate(dueDate) {
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+  if (!dateRegex.test(dueDate)) {
+    return false;
+  }
+
+  const currentDate = new Date();
+  const inputDate = new Date(dueDate);
+
+  return inputDate >= currentDate;
+}
+
 
   validateTask(task) {
     return (
@@ -139,7 +206,9 @@ clearInputFields() {
     editButtons.forEach(button => {
       button.addEventListener("click", () => {
         const index = button.getAttribute("data-index");
-        this.editTask(index);
+        const updatedTask = this.getUpdatedTaskFromForm(); 
+        this.taskManager.editTask(index, updatedTask); 
+        this.renderTaskList(); 
       });
     });
   }
@@ -149,7 +218,8 @@ clearInputFields() {
     deleteButtons.forEach(button => {
       button.addEventListener("click", () => {
         const index = button.getAttribute("data-index");
-        this.deleteTask(index);
+        this.taskManager.deleteTask(index); 
+        this.renderTaskList(); 
       });
     });
   }
