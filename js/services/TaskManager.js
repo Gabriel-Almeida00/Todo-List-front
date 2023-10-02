@@ -1,4 +1,3 @@
-import Task from '../models/Task';
 import TaskLocalStorage from './TaskLocalStorage';
 
 

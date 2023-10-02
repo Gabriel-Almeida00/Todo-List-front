@@ -38,7 +38,7 @@ class TaskController {
         });
 
         selectedTaskIndexes.forEach(index => {
-          this.taskManager.deleteTask(index); // Chamando o método deleteTask do taskManager
+          this.taskManager.deleteTask(index); 
         });
 
         this.renderTaskList();
@@ -175,7 +175,6 @@ clearInputFields() {
 
   renderTaskList() {
     const filteredTasks = this.taskManager.filterTasksByStatus(this.filterStatusInput.value);
-
     this.taskTable.innerHTML = "";
 
     filteredTasks.forEach((task, index) => {
