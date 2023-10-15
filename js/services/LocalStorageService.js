@@ -1,13 +1,20 @@
-class TaskLocalStorage {
-  
-    static loadTasks() {
-      const tasksJSON = localStorage.getItem('tasks');
-      return tasksJSON ? JSON.parse(tasksJSON) : [];
-    }
-  
-    static saveTasks(tasks) {
-      localStorage.setItem('tasks', JSON.stringify(tasks));
+class LocalStorageService {
+  load(key) {
+    try {
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : [];
+    } catch (error) {
+      throw new Error(`Error loading data from localStorage: ${error.message}`);
     }
   }
-  
-  export default TaskLocalStorage;
+
+  save(key, data) {
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+    } catch (error) {
+      throw new Error(`Error saving data to localStorage: ${error.message}`);
+    }
+  }
+}
+
+export default LocalStorageService;

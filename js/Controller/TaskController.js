@@ -1,7 +1,7 @@
-import TaskService from "../services/TaskService";
+
 class TaskController {
-  constructor() {
-    this.taskManager = new TaskService();
+  constructor(taskService) {
+    this.taskManager = taskService;
     this.initializeElements();
   }
 
@@ -158,8 +158,7 @@ clearInputFields() {
 
 
   renderTaskList() {
-   // const filteredTasks = this.taskManager.filterTasksByStatus(this.filterStatusInput.value);
-    const filteredTasks = this.taskManager.getTasks();
+    const filteredTasks = this.taskManager.filterTasksByStatus(this.filterStatusInput.value);
     this.taskTable.innerHTML = "";
 
     filteredTasks.forEach((task, index) => {

@@ -1,9 +1,8 @@
-import TaskLocalStorage from './LocalStorageService';
-
 
 class TaskService {
-  constructor() {
-    this.tasks = TaskLocalStorage.loadTasks();
+  constructor(storageService) {
+    this.storageService = storageService;
+    this.tasks = this.storageService.load('tasks') || [];
   }
 
   addTask(task) {
@@ -29,18 +28,17 @@ class TaskService {
     });
     this.saveTasks();
   }
-  
 
   filterTasksByStatus(status) {
     return status === "all" ? this.tasks : this.tasks.filter(task => task.status === status);
   }
 
   getTasks() {
-   return this.tasks;
+    return this.tasks;
   }
 
   saveTasks() {
-    TaskLocalStorage.saveTasks(this.tasks);
+    this.storageService.save('tasks', this.tasks);
   }
 }
 export default TaskService;
