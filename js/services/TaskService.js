@@ -1,7 +1,7 @@
-import TaskLocalStorage from './TaskLocalStorage';
+import TaskLocalStorage from './LocalStorageService';
 
 
-class TaskManager {
+class TaskService {
   constructor() {
     this.tasks = TaskLocalStorage.loadTasks();
   }
@@ -36,16 +36,11 @@ class TaskManager {
   }
 
   getTasks() {
-    const savedTasks = localStorage.getItem('tasks');
-    if (savedTasks) {
-      return JSON.parse(savedTasks);
-    } else {
-      return [];
-    }
+   return this.tasks;
   }
 
   saveTasks() {
     TaskLocalStorage.saveTasks(this.tasks);
   }
 }
-export default TaskManager;
+export default TaskService;

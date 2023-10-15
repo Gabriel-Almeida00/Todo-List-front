@@ -1,4 +1,4 @@
-import TaskController from "./UI/TaskController";
+import TaskController from "./Controller/TaskController";
 
 document.addEventListener("DOMContentLoaded", function () {
     const uiController = new TaskController();

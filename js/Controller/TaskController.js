@@ -1,9 +1,11 @@
-import TaskManager from "../services/TaskManager";
-
+import TaskService from "../services/TaskService";
 class TaskController {
-  
   constructor() {
-    this.taskManager = new TaskManager();
+    this.taskManager = new TaskService();
+    this.initializeElements();
+  }
+
+  initializeElements() {
     this.taskForm = document.getElementById("task-form");
     this.taskTable = document.getElementById("task-table");
     this.filterStatusInput = document.getElementById("filter-status");
@@ -11,48 +13,30 @@ class TaskController {
     this.changeStatusSelectedBtn = document.getElementById("change-status-selected-btn");
 
     if (this.taskForm && this.taskTable && this.filterStatusInput && this.selectAllCheckbox && this.changeStatusSelectedBtn) {
-      this.taskForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        this.addTask();
-      });
-
-      this.filterStatusInput.addEventListener("change", () => {
-        this.renderTaskList();
-      });
-
-      this.selectAllCheckbox.addEventListener("change", () => {
-        const taskCheckboxes = document.querySelectorAll(".task-checkbox");
-        taskCheckboxes.forEach(checkbox => {
-          checkbox.checked = this.selectAllCheckbox.checked;
-        });
-      });
-
-      this.changeStatusSelectedBtn.addEventListener("click", () => {
-        const selectedTaskIndexes = [];
-        const taskCheckboxes = document.querySelectorAll(".task-checkbox");
-
-        taskCheckboxes.forEach((checkbox, index) => {
-          if (checkbox.checked) {
-            selectedTaskIndexes.push(index);
-          }
-        });
-
-        selectedTaskIndexes.forEach(index => {
-          this.taskManager.deleteTask(index); 
-        });
-
-        this.renderTaskList();
-
-        this.selectAllCheckbox.checked = false;
-        taskCheckboxes.forEach(checkbox => {
-          checkbox.checked = false;
-        });
-      });
-
-      this.renderTaskList(this.taskManager.getTasks());
+      this.setupEventListeners();
+      this.renderTaskList();
     } else {
       console.error("One or more elements are missing on the page.");
     }
+  }
+
+  setupEventListeners() {
+    this.taskForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      this.addTask();
+    });
+
+    this.filterStatusInput.addEventListener("change", () => {
+      this.renderTaskList();
+    });
+
+    this.selectAllCheckbox.addEventListener("change", () => {
+      this.toggleSelectAll();
+    });
+
+    this.changeStatusSelectedBtn.addEventListener("click", () => {
+      this.changeSelectedTaskStatus();
+    });
   }
 
 
@@ -174,7 +158,8 @@ clearInputFields() {
 
 
   renderTaskList() {
-    const filteredTasks = this.taskManager.filterTasksByStatus(this.filterStatusInput.value);
+   // const filteredTasks = this.taskManager.filterTasksByStatus(this.filterStatusInput.value);
+    const filteredTasks = this.taskManager.getTasks();
     this.taskTable.innerHTML = "";
 
     filteredTasks.forEach((task, index) => {
