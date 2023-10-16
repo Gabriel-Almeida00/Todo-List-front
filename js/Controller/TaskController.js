@@ -21,23 +21,27 @@ class TaskController {
   }
 
   setupEventListeners() {
-    this.taskForm.addEventListener("submit", (event) => {
-      event.preventDefault();
+    document.getElementById("add-task").addEventListener("click", () => {
       this.addTask();
     });
-
+  
+    document.getElementById("update-task").addEventListener("click", () => {
+      this.updateTask();
+    });
+  
     this.filterStatusInput.addEventListener("change", () => {
       this.renderTaskList();
     });
-
+  
     this.selectAllCheckbox.addEventListener("change", () => {
       this.toggleSelectAll();
     });
-
+  
     this.changeStatusSelectedBtn.addEventListener("click", () => {
       this.changeSelectedTaskStatus();
     });
   }
+  
 
 
   addTask() {
@@ -189,11 +193,35 @@ clearInputFields() {
     editButtons.forEach(button => {
       button.addEventListener("click", () => {
         const index = button.getAttribute("data-index");
-        const updatedTask = this.getUpdatedTaskFromForm(); 
-        this.taskManager.editTask(index, updatedTask); 
-        this.renderTaskList(); 
+        this.prepareTaskFormForEdit(index);
       });
     });
+  }
+
+  prepareTaskFormForEdit(index) {
+    const task = this.taskManager.getTasks()[index];
+    const taskForm = document.getElementById("task-form");
+
+    taskForm.querySelector("#task-name").value = task.name;
+    taskForm.querySelector("#task-description").value = task.description;
+    taskForm.querySelector("#task-due-date").value = task.dueDate;
+    taskForm.querySelector("#task-priority").value = task.priority;
+    taskForm.querySelector("#task-category").value = task.category;
+    taskForm.querySelector("#task-status").value = task.status;
+
+    taskForm.dataset.editingIndex = index;
+  }
+
+  updateTask() {
+    const taskForm = document.getElementById("task-form");
+    const index = taskForm.dataset.editingIndex;
+    if (index !== undefined) {
+      const updatedTask = this.getUpdatedTaskFromForm();
+      this.taskManager.editTask(index, updatedTask);
+      this.clearInputFields();
+      delete taskForm.dataset.editingIndex;
+      this.renderTaskList();
+    }
   }
 
   setupDeleteButtons() {
