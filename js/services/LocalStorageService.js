@@ -1,5 +1,8 @@
-class LocalStorageService {
+import DataService from "./DataService"
+
+class LocalStorageService extends DataService{
   constructor(key) {
+    super();
     this.key = key;
 }
 
