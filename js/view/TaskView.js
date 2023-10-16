@@ -146,7 +146,7 @@ class TaskView {
             this.taskController.updateTask(index, updatedTask);
 
             this.clearInputFields();
-            delete  taskForm.dataset.editingIndex;
+            delete taskForm.dataset.editingIndex;
             this.renderTaskList();
         }
     }
@@ -175,6 +175,16 @@ class TaskView {
                 this.renderTaskList();
             });
         });
+    }
+
+    changeSelectedTaskStatus() {
+        const selectedCheckboxes = document.querySelectorAll('.task-checkbox:checked');
+        
+        const selectedIndexes = Array.from(selectedCheckboxes).map(checkbox => parseInt(checkbox.getAttribute('data-index')));
+        
+        this.taskController.changeSelectedTaskStatus(selectedIndexes);
+        
+        this.renderTaskList();
     }
 }
 export default TaskView;
