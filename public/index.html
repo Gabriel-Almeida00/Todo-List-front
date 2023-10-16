@@ -1,42 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <title>Todo List</title>
 </head>
+
 <body>
     <div class="task-container">
         <h1>Todo List</h1>
         <form id="task-form">
             <label for="task-name">Nome da tarefa:</label>
             <input type="text" id="task-name" name="task-name" required><br>
-            
+
             <label for="task-description">Descrição da tarefa:</label>
             <input type="text" id="task-description" name="task-description" required><br>
-            
+
             <label for="task-category">Categoria da tarefa:</label>
             <input type="text" id="task-category" name="task-category" required><br>
-            
+
             <label for="task-due-date">Data de Término:</label>
             <input type="date" id="task-due-date" name="task-due-date" required><br>
-            
+
             <label for="task-priority">Prioridade (1-5):</label>
             <input type="number" id="task-priority" name="task-priority" min="1" max="5" required><br>
-            
+
             <label for="task-status">Status:</label>
             <select id="task-status" name="task-status">
                 <option value="todo">Todo</option>
                 <option value="doing">Doing</option>
                 <option value="done">Done</option>
             </select><br>
-            
+
+            <label for="task-notification">Notificações por E-mail:</label>
+            <div id="task-notification">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-input" required>
+
+                <input type="checkbox" id="notify-on-due-date" name="notify-on-due-date">
+                <label for="notify-on-due-date">Notificar quando a data de término estiver próxima</label><br>
+
+                <input type="checkbox" id="notify-on-complete" name="notify-on-complete">
+                <label for="notify-on-complete">Notificar quando a tarefa estiver concluída</label><br>
+                
+                <input type="checkbox" id="notify-on-pending" name="notify-on-pending">
+                <label for="notify-on-pending">Notificar quando a tarefa estiver pendente</label><br>
+            </div>
+
             <button type="button" id="add-task" class="add-task">Salvar</button>
             <button type="button" id="update-task" class="update-task">Atualizar</button>
-            
+
         </form>
-        
+
         <h2>Filtrar por Status:</h2>
         <select id="filter-status">
             <option value="all">Todos</option>
@@ -44,7 +61,7 @@
             <option value="doing">Doing</option>
             <option value="done">Done</option>
         </select>
-        
+
         <table id="task-table">
             <thead>
                 <tr>
@@ -59,12 +76,13 @@
                 </tr>
             </thead>
             <tbody id="task-list">
-               
+
             </tbody>
         </table>
         <button id="change-status-selected-btn">Marcar como Concluída</button>
     </div>
-    
+
     <script src="/bundle.js"></script>
 </body>
+
 </html>
