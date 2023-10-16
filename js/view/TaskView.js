@@ -50,8 +50,12 @@ class TaskView {
             priority: document.getElementById("task-priority"),
             category: document.getElementById("task-category"),
             status: document.getElementById("task-status"),
+            email: document.getElementById("email"),
+            notifyOnDueDate: document.getElementById("notify-on-due-date"),
+            notifyOnComplete: document.getElementById("notify-on-complete"),
+            notifyOnPending: document.getElementById("notify-on-pending"),
         };
-
+    
         const task = {
             name: elements.name.value.trim(),
             description: elements.description.value.trim(),
@@ -59,10 +63,18 @@ class TaskView {
             priority: parseInt(elements.priority.value),
             category: elements.category.value.trim(),
             status: elements.status.value,
+            emailNotification: {
+                email: elements.email.value,
+                checkDueDate: elements.notifyOnDueDate.checked,
+                checkTaskDone: elements.notifyOnComplete.checked,
+                checkTaskPending: elements.notifyOnPending.checked,
+            },
         };
-
+    
         return task;
     }
+    
+    
 
     clearInputFields() {
         const taskNameInput = document.getElementById("task-name");
@@ -71,14 +83,24 @@ class TaskView {
         const taskPriorityInput = document.getElementById("task-priority");
         const taskCategoryInput = document.getElementById("task-category");
         const taskStatusInput = document.getElementById("task-status");
-
+        const emailInput = document.getElementById("email");
+        const notifyOnDueDateInput = document.getElementById("notify-on-due-date");
+        const notifyOnCompleteInput = document.getElementById("notify-on-complete");
+        const notifyOnPendingInput = document.getElementById("notify-on-pending");
+    
         taskNameInput.value = "";
         taskDescriptionInput.value = "";
         taskDueDateInput.value = "";
         taskPriorityInput.value = "";
         taskCategoryInput.value = "";
         taskStatusInput.value = "todo";
+    
+        emailInput.value = "";
+        notifyOnDueDateInput.checked = false;
+        notifyOnCompleteInput.checked = false;
+        notifyOnPendingInput.checked = false;
     }
+    
 
     renderTaskList() {
         const filteredTasks = this.taskController.filterTasksByStatus(this.filterStatusInput.value);
@@ -119,16 +141,29 @@ class TaskView {
     prepareTaskFormForEdit(index) {
         const task = this.taskController.getTasks()[index];
         const taskForm = document.getElementById("task-form");
-
+    
         taskForm.querySelector("#task-name").value = task.name;
         taskForm.querySelector("#task-description").value = task.description;
         taskForm.querySelector("#task-due-date").value = task.dueDate;
         taskForm.querySelector("#task-priority").value = task.priority;
         taskForm.querySelector("#task-category").value = task.category;
         taskForm.querySelector("#task-status").value = task.status;
-
+    
+        const emailInput = document.getElementById("email");
+        emailInput.value = task.emailNotification.email;
+    
+        const notifyOnDueDateCheckbox = document.getElementById("notify-on-due-date");
+        notifyOnDueDateCheckbox.checked = task.emailNotification.checkDueDate;
+    
+        const notifyOnCompleteCheckbox = document.getElementById("notify-on-complete");
+        notifyOnCompleteCheckbox.checked = task.emailNotification.checkTaskDone;
+    
+        const notifyOnPendingCheckbox = document.getElementById("notify-on-pending");
+        notifyOnPendingCheckbox.checked = task.emailNotification.checkTaskPending;
+    
         taskForm.dataset.editingIndex = index;
     }
+    
 
     addTask() {
         const task = this.getTaskFromForm();
@@ -179,11 +214,9 @@ class TaskView {
 
     changeSelectedTaskStatus() {
         const selectedCheckboxes = document.querySelectorAll('.task-checkbox:checked');
-        
         const selectedIndexes = Array.from(selectedCheckboxes).map(checkbox => parseInt(checkbox.getAttribute('data-index')));
         
         this.taskController.changeSelectedTaskStatus(selectedIndexes);
-        
         this.renderTaskList();
     }
 }
