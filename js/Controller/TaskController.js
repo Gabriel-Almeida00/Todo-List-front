@@ -45,75 +45,69 @@ class TaskController {
 
 
   addTask() {
-    const taskNameInput = document.getElementById("task-name");
-    const taskDescriptionInput = document.getElementById("task-description");
-    const taskDueDateInput = document.getElementById("task-due-date");
-    const taskPriorityInput = document.getElementById("task-priority");
-    const taskCategoryInput = document.getElementById("task-category");
-    const taskStatusInput = document.getElementById("task-status");
-
-    const task = {
-      name: taskNameInput.value.trim(),
-      description: taskDescriptionInput.value.trim(),
-      dueDate: taskDueDateInput.value,
-      priority: parseInt(taskPriorityInput.value),
-      category: taskCategoryInput.value.trim(),
-      status: taskStatusInput.value
-    };
-
-    if (!this.validatePriority(task.priority)) {
-      alert("Nível de prioridade inválido.");
-      return;
-    }
-
-    if (!this.validateDueDate(task.dueDate)) {
-      alert("Data de término inválida ou menor que a data atual.");
-      return;
-    }
-
-    if (this.validateTask(task)) {
+    const task = this.getTaskFromForm();
+  
+    if (this.isValidTask(task)) {
       this.taskManager.addTask(task);
       this.renderTaskList();
       this.clearInputFields();
-  } else {
-      alert("Please fill in all required fields.");
+    }
   }
-}
-
-getUpdatedTaskFromForm() {
-  const taskNameInput = document.getElementById("task-name");
-  const taskDescriptionInput = document.getElementById("task-description");
-  const taskDueDateInput = document.getElementById("task-due-date");
-  const taskPriorityInput = document.getElementById("task-priority");
-  const taskCategoryInput = document.getElementById("task-category");
-  const taskStatusInput = document.getElementById("task-status");
-
-  const updatedTask = {
-    name: taskNameInput.value.trim(),
-    description: taskDescriptionInput.value.trim(),
-    dueDate: taskDueDateInput.value,
-    priority: parseInt(taskPriorityInput.value),
-    category: taskCategoryInput.value.trim(),
-    status: taskStatusInput.value
-  };
-
-  if (!this.validatePriority(updatedTask.priority)) {
-    alert("Nível de prioridade inválido.");
-    return ; 
+  
+  getTaskFromForm() {
+    const elements = {
+      name: document.getElementById("task-name"),
+      description: document.getElementById("task-description"),
+      dueDate: document.getElementById("task-due-date"),
+      priority: document.getElementById("task-priority"),
+      category: document.getElementById("task-category"),
+      status: document.getElementById("task-status"),
+    };
+  
+    const task = {
+      name: elements.name.value.trim(),
+      description: elements.description.value.trim(),
+      dueDate: elements.dueDate.value,
+      priority: parseInt(elements.priority.value),
+      category: elements.category.value.trim(),
+      status: elements.status.value,
+    };
+  
+    return task;
   }
-
-  if (!this.validateDueDate(updatedTask.dueDate)) {
-    alert("Data de término inválida ou menor que a data atual.");
-    return ; 
+  
+  isValidTask(task) {
+    if (!this.validatePriority(task.priority)) {
+      alert("Nível de prioridade inválido.");
+      return false;
+    }
+  
+    if (!this.validateDueDate(task.dueDate)) {
+      alert("Data de término inválida ou menor que a data atual.");
+      return false;
+    }
+  
+    if (!this.validateTask(task)) {
+      alert("Por favor, preencha todos os campos obrigatórios.");
+      return false;
+    }
+  
+    return true;
   }
+  
 
-  if (this.validateTask(updatedTask)) {
-    return updatedTask; 
-  } else {
-    alert("Por favor, preencha todos os campos obrigatórios.");
-    return ; 
+  getUpdatedTaskFromForm() {
+    const task = this.getTaskFromForm();
+  
+    if (!this.isValidTask(task)) {
+      alert("Por favor, preencha todos os campos obrigatórios corretamente.");
+      return null; 
+    }
+  
+    return task;
   }
-}
+  
+
 
 validatePriority(priority) {
   const priorityRegex = /^[1-5]$/;
@@ -161,32 +155,42 @@ clearInputFields() {
 }
 
 
-  renderTaskList() {
-    const filteredTasks = this.taskManager.filterTasksByStatus(this.filterStatusInput.value);
-    this.taskTable.innerHTML = "";
+renderTaskList() {
+  const filteredTasks = this.taskManager.filterTasksByStatus(this.filterStatusInput.value);
+  const fragment = document.createDocumentFragment();
 
-    filteredTasks.forEach((task, index) => {
-      const taskRow = document.createElement("tr");
-      taskRow.innerHTML = `
-        <td><input type="checkbox" class="task-checkbox" data-index="${index}"></td>
-        <td>${task.name}</td>
-        <td>${task.description}</td>
-        <td>${task.category}</td>
-        <td>${task.dueDate}</td>
-        <td>${task.priority}</td>
-        <td>${task.status}</td>
-        <td class="actions">
-          <button class="edit-task-btn" data-index="${index}">Editar</button>
-          <button class="delete-task-btn" data-index="${index}">Excluir</button>
-        </td>
-      `;
+  filteredTasks.forEach((task, index) => {
+    const taskRow = this.createTaskRow(task, index);
+    fragment.appendChild(taskRow);
+  });
 
-      this.taskTable.appendChild(taskRow);
-    });
+  this.taskTable.innerHTML = "";
+  this.taskTable.appendChild(fragment);
 
-    this.setupEditButtons();
-    this.setupDeleteButtons();
-  }
+  this.setupEditButtons();
+  this.setupDeleteButtons();
+}
+
+createTaskRow(task, index) {
+  const row = document.createElement("tr");
+
+  row.innerHTML = `
+    <td><input type="checkbox" class="task-checkbox" data-index="${index}"></td>
+    <td>${task.name}</td>
+    <td>${task.description}</td>
+    <td>${task.category}</td>
+    <td>${task.dueDate}</td>
+    <td>${task.priority}</td>
+    <td>${task.status}</td>
+    <td class="actions">
+      <button class="edit-task-btn" data-index="${index}">Editar</button>
+      <button class="delete-task-btn" data-index="${index}">Excluir</button>
+    </td>
+  `;
+
+  return row;
+}
+
 
   setupEditButtons() {
     const editButtons = document.querySelectorAll(".edit-task-btn");
