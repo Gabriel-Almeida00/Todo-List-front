@@ -45,6 +45,3 @@ Este é um simples aplicativo de lista de tarefas desenvolvido usando HTML, CSS 
 
 Este projeto pode está se expandido e aprimorando com um backend: https://github.com/Gabriel-Almeida00/Todo-List
 
-
-
-Este projeto foi desenvolvido como parte do aprendizado e é fornecido como está, sem garantia de qualquer tipo. Sinta-se à vontade para usar, modificar e distribuir conforme suas necessidades.
