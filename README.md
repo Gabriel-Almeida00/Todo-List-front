@@ -14,6 +14,7 @@ Este é um simples aplicativo de lista de tarefas desenvolvido usando HTML, CSS 
 - Editar tarefas existentes
 - Excluir tarefas
 - Filtrar tarefas por Status
+- Emvia email com o serviço de smtpJs para tarefa concluida , um dia antes e tarefa pendente
 
  ###  Marcar como Concluída
 
