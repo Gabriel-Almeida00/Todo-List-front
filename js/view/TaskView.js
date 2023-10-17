@@ -1,6 +1,7 @@
 class TaskView {
-    constructor(controller) {
+    constructor(controller, emailObserver) {
         this.taskController = controller;
+        this.emailObserver = emailObserver
         this.initializeElements();
         this.setupEventListeners();
     }
@@ -116,6 +117,8 @@ class TaskView {
 
         this.setupEditButtons();
         this.setupDeleteButtons();
+
+        this.emailObserver.sendEmailsBasedOnEvents(filteredTasks);
     }
 
     createTaskRow(task, index) {
@@ -168,6 +171,7 @@ class TaskView {
     addTask() {
         const task = this.getTaskFromForm();
         this.taskController.addTask(task);
+        this.emailObserver.addObserver(task);
 
         this.renderTaskList();
         this.clearInputFields();
@@ -179,6 +183,7 @@ class TaskView {
         if (index !== undefined) {
             const updatedTask = this.getUpdatedTaskFromForm();
             this.taskController.updateTask(index, updatedTask);
+            this.emailObserver.addObserver(updatedTask);
 
             this.clearInputFields();
             delete taskForm.dataset.editingIndex;
